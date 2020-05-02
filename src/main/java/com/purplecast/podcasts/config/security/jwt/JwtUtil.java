@@ -20,7 +20,7 @@ public class JwtUtil {
                 .setClaims(new HashMap<>())
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 2 * ONE_MINUTE))
+                .setExpiration(new Date(System.currentTimeMillis() + 50 * ONE_MINUTE))
                 .signWith(SignatureAlgorithm.HS256, SECRET)
                 .compact();
     }
