@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,10 +79,17 @@ public class UserService implements UserDetailsService {
                 .count();
         if (count != 0)
             throw new PodcastIsAlreadyFreeException();
-        if (user.getShoppingCart().contains(podcast))
+        UserPodcast userPodcastToUpdate = user.getUserPodcasts().stream()
+                .filter(userPodcast -> userPodcast.getPodcast().getId().equals(podcastId))
+                .findAny().orElseThrow(PodcastNotFoundException::new);
+        if (user.getShoppingCart().contains(podcast)) {
             user.getShoppingCart().remove(podcast);
-        else
+            userPodcastToUpdate.setInCart(false);
+        }
+        else {
             user.getShoppingCart().add(podcast);
+            userPodcastToUpdate.setInCart(true);
+        }
         userRepository.save(user);
     }
 
@@ -95,6 +101,10 @@ public class UserService implements UserDetailsService {
             user.getShoppingCart().remove(podcast);
         else
             throw new PodcastIsNotInShoppingCartException();
+        user.getUserPodcasts().stream()
+                .filter(userPodcast -> userPodcast.getPodcast().getId().equals(podcastId))
+                .findFirst().orElseThrow(PodcastNotFoundException::new)
+                .setInCart(false);
         userRepository.save(user);
     }
 
@@ -106,6 +116,7 @@ public class UserService implements UserDetailsService {
         User user = getUser(username);
         unblockPurchasedPodcasts(user);
         user.getShoppingCart().clear();
+        userRepository.save(user);
     }
 
     private void unblockPurchasedPodcasts(User user) {
@@ -119,5 +130,6 @@ public class UserService implements UserDetailsService {
             userPodcast.setBlocked(false);
             userPodcastRepository.save(userPodcast);
         });
+        userRepository.save(user);
     }
 }

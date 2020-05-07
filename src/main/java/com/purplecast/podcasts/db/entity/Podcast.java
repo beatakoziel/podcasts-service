@@ -3,6 +3,7 @@ package com.purplecast.podcasts.db.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Builder
@@ -33,5 +34,7 @@ public class Podcast {
 
     @Column(nullable = false)
     private boolean blocked;
+
+    private BigDecimal price;
 
 }

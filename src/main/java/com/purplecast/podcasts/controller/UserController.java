@@ -15,7 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:8082")
+@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:8081",
+        "http://localhost:8082", "http://localhost:8083"})
 public class UserController {
 
     private final UserService userService;
@@ -66,7 +67,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PostMapping("/shopping-cart/approve")
+    @PutMapping("/shopping-cart/approve")
     public ResponseEntity<Void> approvePayment(Authentication authentication) {
         userService.approvePayment(getUsernameFromAuthentication(authentication));
         return ResponseEntity.status(HttpStatus.OK).build();

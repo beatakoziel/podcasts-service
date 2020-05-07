@@ -25,4 +25,7 @@ public class UserPodcast {
     @Column(nullable = false)
     private boolean favourite;
 
+    @Column(nullable = false)
+    private boolean inCart;
+
 }

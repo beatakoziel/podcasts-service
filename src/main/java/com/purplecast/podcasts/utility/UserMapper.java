@@ -37,6 +37,7 @@ public class UserMapper {
                                     .podcast(podcast)
                                     .blocked(podcast.isBlocked())
                                     .favourite(false)
+                                    .inCart(false)
                                     .build()
                     );
                     userPodcastList.add(userPodcast);

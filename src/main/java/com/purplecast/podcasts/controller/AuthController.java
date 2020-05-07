@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:8082")
+@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:8081",
+        "http://localhost:8082", "http://localhost:8083"})
 public class AuthController {
 
     private AuthenticationManager authenticationManager;
