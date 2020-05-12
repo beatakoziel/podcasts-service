@@ -37,4 +37,7 @@ public class Podcast {
 
     private BigDecimal price;
 
+    @Column(nullable = false)
+    private String length;
+
 }
