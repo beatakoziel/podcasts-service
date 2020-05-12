@@ -10,7 +10,7 @@ values (1,
         '04:06') ON DUPLICATE KEY UPDATE title='Walka z kryzysem';
 insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length)
 values (2,
-        'Metody zmiany nawyków',
+        'Zmiana nawyków',
         'W świecie rozwoju osobistego nawyki są największym narzędziem zmiany czegokolwiek.',
         'mindset',
         'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
@@ -25,7 +25,7 @@ values (3,
         'ecology',
         'https://images.unsplash.com/photo-1517925035435-7976539b920d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1055&q=80',
         'globalne_ocieplenie',
-        true,
+        false,
         1,
         '12:01') ON DUPLICATE KEY update title='Jaką cenę zapłacimy';
 insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length)
@@ -45,7 +45,7 @@ values (5,
         'mindset',
         'https://images.unsplash.com/photo-1522410818928-5522dacd5066?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80',
         'metody_zmiany_nawykow',
-        true,
+        false,
         2,
         '12:00') ON DUPLICATE KEY update title='Znajdź sobie hobby';
 
