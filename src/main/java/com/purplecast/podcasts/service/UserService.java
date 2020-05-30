@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
     public String getUserRole(String username) {
         User user = getUser(username);
         String userRole = user.getUserRole().toString();
-        if(userRole.equalsIgnoreCase("ADMIN")&&user.getUserPodcasts()==null){
+        if(userRole.equalsIgnoreCase("ADMIN")&&user.getUserPodcasts().isEmpty()){
             podcastRepository.findAll().forEach(podcast -> {
                         UserPodcast userPodcast = userPodcastRepository.save(
                                 UserPodcast.builder()
