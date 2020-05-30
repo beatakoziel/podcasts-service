@@ -8,7 +8,7 @@ import com.purplecast.podcasts.db.repository.UserPodcastRepository;
 import com.purplecast.podcasts.db.repository.UserRepository;
 import com.purplecast.podcasts.dto.RegisterRequest;
 import com.purplecast.podcasts.utility.UserMapper;
-import com.purplecast.podcasts.utility.UserNotFoundException;
+import com.purplecast.podcasts.utility.exception.UserNotFoundException;
 import com.purplecast.podcasts.utility.exception.PasswordsDontMatchException;
 import com.purplecast.podcasts.utility.exception.PodcastIsAlreadyFreeException;
 import com.purplecast.podcasts.utility.exception.PodcastIsNotInShoppingCartException;
@@ -41,6 +41,26 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UserNotFoundException(username));
     }
 
+    public String getUserRole(String username) {
+        User user = getUser(username);
+        String userRole = user.getUserRole().toString();
+        if(userRole.equalsIgnoreCase("ADMIN")&&user.getUserPodcasts()==null){
+            podcastRepository.findAll().forEach(podcast -> {
+                        UserPodcast userPodcast = userPodcastRepository.save(
+                                UserPodcast.builder()
+                                        .podcast(podcast)
+                                        .blocked(podcast.isBlocked())
+                                        .favourite(false)
+                                        .inCart(false)
+                                        .build()
+                        );
+                        user.getUserPodcasts().add(userPodcast);
+                    }
+            );
+            userRepository.save(user);
+        }
+        return userRole;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String s) {

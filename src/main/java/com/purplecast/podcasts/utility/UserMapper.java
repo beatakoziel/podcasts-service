@@ -2,6 +2,7 @@ package com.purplecast.podcasts.utility;
 
 import com.purplecast.podcasts.db.entity.User;
 import com.purplecast.podcasts.db.entity.UserPodcast;
+import com.purplecast.podcasts.db.enums.UserRole;
 import com.purplecast.podcasts.db.repository.PodcastRepository;
 import com.purplecast.podcasts.db.repository.UserPodcastRepository;
 import com.purplecast.podcasts.db.repository.UserRepository;
@@ -46,6 +47,7 @@ public class UserMapper {
         return User.builder()
                 .username(in.getUsername())
                 .password(passwordEncoder.encode(in.getPassword()))
+                .userRole(UserRole.USER)
                 .shoppingCart(new ArrayList<>())
                 .userPodcasts(userPodcastList)
                 .build();

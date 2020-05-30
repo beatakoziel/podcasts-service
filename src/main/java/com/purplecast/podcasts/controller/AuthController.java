@@ -40,7 +40,7 @@ public class AuthController {
         }
         final UserDetails userDetails = userDetailService.loadUserByUsername(user.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new TokenResponse(jwt));
+        return ResponseEntity.ok(new TokenResponse(jwt, userDetailService.getUserRole(user.getUsername())));
     }
 
     @PostMapping(value = "/register", consumes = "application/json")

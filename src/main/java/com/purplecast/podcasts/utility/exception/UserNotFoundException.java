@@ -1,4 +1,4 @@
-package com.purplecast.podcasts.utility;
+package com.purplecast.podcasts.utility.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(Long userId) {

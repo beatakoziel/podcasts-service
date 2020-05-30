@@ -49,4 +49,4 @@ values (5,
         2,
         '12:00') ON DUPLICATE KEY update title='Znajdź sobie hobby';
 
-replace into podcast_user(id, username, password) values (1, 'admin', '$2y$12$b5LIwLw1C39dptntq1atSu/A2YhCXYWxiPLou/yT5DgKtVaYji3TG');
+replace into podcast_user(id, username, password, user_role) values (1, 'admin', '$2y$12$b5LIwLw1C39dptntq1atSu/A2YhCXYWxiPLou/yT5DgKtVaYji3TG', 'ADMIN');

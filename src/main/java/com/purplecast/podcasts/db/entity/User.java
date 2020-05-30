@@ -1,6 +1,7 @@
 package com.purplecast.podcasts.db.entity;
 
 
+import com.purplecast.podcasts.db.enums.UserRole;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,10 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRole userRole;
 
     @ManyToMany
     private List<Podcast> shoppingCart;
