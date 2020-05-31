@@ -2,7 +2,9 @@ package com.purplecast.podcasts.controller;
 
 import com.purplecast.podcasts.db.entity.Podcast;
 import com.purplecast.podcasts.db.entity.UserPodcast;
+import com.purplecast.podcasts.dto.PodcastRequest;
 import com.purplecast.podcasts.service.PodcastService;
+import com.purplecast.podcasts.utility.PodcastMapper;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.springframework.core.io.UrlResource;
@@ -10,6 +12,7 @@ import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,10 +25,28 @@ import java.util.List;
 public class PodcastController {
 
     private final PodcastService podcastService;
+    private final PodcastMapper podcastMapper;
 
     @GetMapping
     public ResponseEntity<List<Podcast>> getPodcasts() {
         return ResponseEntity.ok(podcastService.getPodcasts());
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addPodcast(@RequestBody PodcastRequest podcastRequest) {
+        podcastService.addPodcast(podcastMapper.mapToEntity(podcastRequest));
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/audio")
+    public ResponseEntity<Void> uploadAudioFile(@RequestBody MultipartFile audioFile) {
+        podcastService.uploadFile(audioFile);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/names")
+    public ResponseEntity<List<String>> getPodcastsFileNames(){
+        return ResponseEntity.ok(podcastService.getPodcastsFileNames());
     }
 
     @GetMapping("/play/{name}")

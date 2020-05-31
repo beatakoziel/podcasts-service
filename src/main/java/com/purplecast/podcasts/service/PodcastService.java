@@ -8,9 +8,17 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Math.min;
 
@@ -20,8 +28,40 @@ public class PodcastService {
 
     private final PodcastRepository podcastRepository;
 
-    public List<Podcast> getPodcasts(){
+    public List<Podcast> getPodcasts() {
         return podcastRepository.findAll();
+    }
+
+    public List<String> getPodcastsFileNames() {
+        File folder = new File("src/main/resources/podcasts");
+        File[] listOfFiles = folder.listFiles();
+        return Arrays.stream(listOfFiles)
+                .map(File::getName)
+                .collect(Collectors.toList());
+    }
+
+    public void addPodcast(Podcast podcast) {
+        podcastRepository.save(podcast);
+    }
+
+    public void uploadFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new RuntimeException("Failed to store empty file");
+        }
+        String fileName = "";
+        try {
+            fileName = file.getOriginalFilename();
+            System.out.println(fileName);
+            InputStream is = file.getInputStream();
+
+            Files.copy(is, Paths.get("src/main/resources/podcasts/" + fileName),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+
+            String msg = String.format("Failed to store file %f", file.getName());
+
+            throw new RuntimeException(msg, e);
+        }
     }
 
     public ResourceRegion resourceRegion(UrlResource video, HttpHeaders headers) throws IOException {
