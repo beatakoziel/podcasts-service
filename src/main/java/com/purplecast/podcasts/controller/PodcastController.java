@@ -1,7 +1,6 @@
 package com.purplecast.podcasts.controller;
 
 import com.purplecast.podcasts.db.entity.Podcast;
-import com.purplecast.podcasts.db.entity.UserPodcast;
 import com.purplecast.podcasts.dto.PodcastRequest;
 import com.purplecast.podcasts.service.PodcastService;
 import com.purplecast.podcasts.utility.PodcastMapper;
@@ -10,7 +9,6 @@ import lombok.val;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.*;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,9 +30,21 @@ public class PodcastController {
         return ResponseEntity.ok(podcastService.getPodcasts());
     }
 
+    @GetMapping("/{podcastId}")
+    public ResponseEntity<PodcastRequest> getPodcastById(@PathVariable Long podcastId) {
+        return ResponseEntity.ok(podcastMapper.mapToRequest(podcastService.getPodcastById(podcastId)));
+    }
+
     @PostMapping
     public ResponseEntity<Void> addPodcast(@RequestBody PodcastRequest podcastRequest) {
         podcastService.addPodcast(podcastMapper.mapToEntity(podcastRequest));
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping("/{podcastId}")
+    public ResponseEntity<Void> updatePodcast(@PathVariable Long podcastId,
+                                              @RequestBody PodcastRequest podcastRequest) {
+        podcastService.updatePodcast(podcastId, podcastRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -45,7 +55,7 @@ public class PodcastController {
     }
 
     @GetMapping("/names")
-    public ResponseEntity<List<String>> getPodcastsFileNames(){
+    public ResponseEntity<List<String>> getPodcastsFileNames() {
         return ResponseEntity.ok(podcastService.getPodcastsFileNames());
     }
 

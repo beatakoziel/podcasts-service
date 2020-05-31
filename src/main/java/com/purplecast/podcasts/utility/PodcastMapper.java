@@ -16,7 +16,7 @@ public class PodcastMapper {
     private final PodcastService podcastService;
 
     public Podcast mapToEntity(PodcastRequest podcastRequest) {
-        if(!podcastService.getPodcastsFileNames().contains(podcastRequest.getFileName())){
+        if (!podcastService.getPodcastsFileNames().contains(podcastRequest.getFileName())) {
             throw new PodcastNotFoundException();
         }
         return Podcast.builder()
@@ -28,6 +28,19 @@ public class PodcastMapper {
                 .length(podcastRequest.getLength().toString())
                 .audioUrl(podcastRequest.getFileName().replace(".mp3", ""))
                 .blocked(!podcastRequest.getPrice().equals(new BigDecimal(0)))
+                .build();
+    }
+
+    public PodcastRequest mapToRequest(Podcast podcast) {
+        return PodcastRequest.builder()
+                .title(podcast.getTitle())
+                .description(podcast.getDescription())
+                .category(podcast.getCategory())
+                .imageUrl(podcast.getImageUrl())
+                .price(podcast.getPrice())
+                .length(Float.valueOf(podcast.getLength().replace(":",".")))
+                .fileName(podcast.getAudioUrl() + ".mp3")
+                .blocked(podcast.isBlocked())
                 .build();
     }
 

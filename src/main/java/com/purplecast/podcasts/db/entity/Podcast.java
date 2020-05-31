@@ -35,6 +35,7 @@ public class Podcast {
     @Column(nullable = false)
     private boolean blocked;
 
+    @Column(nullable=false)
     private BigDecimal price;
 
     @Column(nullable = false)
