@@ -27,4 +27,5 @@ public class PodcastRequest {
     @NotBlank
     private String fileName;
     private boolean blocked;
+    private boolean visible;
 }

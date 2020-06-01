@@ -68,6 +68,12 @@ public class PodcastService {
                 .orElseThrow(PodcastNotFoundException::new);
     }
 
+    public void changeVisibility(Long podcastId) {
+        Podcast podcast = getPodcastById(podcastId);
+        podcast.setVisible(!podcast.isVisible());
+        podcastRepository.save(podcast);
+    }
+
     public void updatePodcast(Long podcastId, PodcastRequest podcastRequest) {
         Podcast podcast = podcastRepository.findById(podcastId)
                 .orElseThrow(PodcastNotFoundException::new);

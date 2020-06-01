@@ -41,4 +41,7 @@ public class Podcast {
     @Column(nullable = false)
     private String length;
 
+    @Column(nullable = false)
+    private boolean visible;
+
 }

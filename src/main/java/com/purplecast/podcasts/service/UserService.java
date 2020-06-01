@@ -8,11 +8,7 @@ import com.purplecast.podcasts.db.repository.UserPodcastRepository;
 import com.purplecast.podcasts.db.repository.UserRepository;
 import com.purplecast.podcasts.dto.RegisterRequest;
 import com.purplecast.podcasts.utility.UserMapper;
-import com.purplecast.podcasts.utility.exception.UserNotFoundException;
-import com.purplecast.podcasts.utility.exception.PasswordsDontMatchException;
-import com.purplecast.podcasts.utility.exception.PodcastIsAlreadyFreeException;
-import com.purplecast.podcasts.utility.exception.PodcastIsNotInShoppingCartException;
-import com.purplecast.podcasts.utility.exception.PodcastNotFoundException;
+import com.purplecast.podcasts.utility.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,7 +40,7 @@ public class UserService implements UserDetailsService {
     public String getUserRole(String username) {
         User user = getUser(username);
         String userRole = user.getUserRole().toString();
-        if(userRole.equalsIgnoreCase("ADMIN")&&user.getUserPodcasts().isEmpty()){
+        if (userRole.equalsIgnoreCase("ADMIN") && user.getUserPodcasts().isEmpty()) {
             podcastRepository.findAll().forEach(podcast -> {
                         UserPodcast userPodcast = userPodcastRepository.save(
                                 UserPodcast.builder()
@@ -69,13 +65,15 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserPodcast> getUserPodcasts(String username) {
-        return getUser(username).getUserPodcasts();
+        return getUser(username).getUserPodcasts().stream()
+                .filter(userPodcast -> userPodcast.getPodcast().isVisible())
+                .collect(Collectors.toList());
     }
 
 
     public void toggleFavouritePodcast(String username, Long podcastId) {
         UserPodcast userPodcast = getUser(username).getUserPodcasts().stream()
-                .filter(usersPodcast -> usersPodcast.getPodcast().getId().equals(podcastId))
+                .filter(usersPodcast -> usersPodcast.getId().equals(podcastId))
                 .findFirst()
                 .orElseThrow(PodcastNotFoundException::new);
         userPodcast.setFavourite(!userPodcast.isFavourite());
@@ -105,8 +103,7 @@ public class UserService implements UserDetailsService {
         if (user.getShoppingCart().contains(podcast)) {
             user.getShoppingCart().remove(podcast);
             userPodcastToUpdate.setInCart(false);
-        }
-        else {
+        } else {
             user.getShoppingCart().add(podcast);
             userPodcastToUpdate.setInCart(true);
         }

@@ -28,6 +28,7 @@ public class PodcastMapper {
                 .length(podcastRequest.getLength().toString())
                 .audioUrl(podcastRequest.getFileName().replace(".mp3", ""))
                 .blocked(!podcastRequest.getPrice().equals(new BigDecimal(0)))
+                .visible(false)
                 .build();
     }
 
@@ -38,7 +39,7 @@ public class PodcastMapper {
                 .category(podcast.getCategory())
                 .imageUrl(podcast.getImageUrl())
                 .price(podcast.getPrice())
-                .length(Float.valueOf(podcast.getLength().replace(":",".")))
+                .length(Float.valueOf(podcast.getLength().replace(":", ".")))
                 .fileName(podcast.getAudioUrl() + ".mp3")
                 .blocked(podcast.isBlocked())
                 .build();

@@ -1,5 +1,5 @@
 alter table podcast CHANGE COLUMN audio_url audio_url VARCHAR(1000);
-insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length)
+insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length, visible)
 values (1,
         'Walka z kryzysem',
         'Jak radzić sobie finansowo podczas kryzysu, który w tym momencie już ma miejsce?',
@@ -8,8 +8,9 @@ values (1,
         'metody_zmiany_nawykow',
         false,
         0,
-        '04.06') ON DUPLICATE KEY UPDATE title='Walka z kryzysem';
-insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length)
+        '04.06',
+        true) ON DUPLICATE KEY UPDATE title='Walka z kryzysem';
+insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length, visible)
 values (2,
         'Zmiana nawyków',
         'W świecie rozwoju osobistego nawyki są największym narzędziem zmiany czegokolwiek.',
@@ -18,8 +19,9 @@ values (2,
         'metody_zmiany_nawykow',
         true,
         5,
-        '16.24') ON DUPLICATE KEY update title='Metody zmiany nawyków';
-insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length)
+        '16.24',
+        true) ON DUPLICATE KEY update title='Metody zmiany nawyków';
+insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length, visible)
 values (3,
         'Jaką cenę zapłacimy',
         'O globalnym ociepleniu opowiada fizyk i ekspert ds. zmian klimatycznych Marcin Popkiewicz.',
@@ -28,8 +30,9 @@ values (3,
         'globalne_ocieplenie',
         false,
         1,
-        '12.01') ON DUPLICATE KEY update title='Jaką cenę zapłacimy';
-insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length)
+        '12.01',
+        true) ON DUPLICATE KEY update title='Jaką cenę zapłacimy';
+insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length, visible)
 values (4,
         'Książkowy rozum',
         'Jak książki kreują nasze spojrzenie na świat? Przewaga książek nad telewizją?',
@@ -38,8 +41,9 @@ values (4,
         'metody_zmiany_nawykow',
         true,
         2,
-        '11.11') ON DUPLICATE KEY update title='Książkowy rozum';
-insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length)
+        '11.11',
+        true) ON DUPLICATE KEY update title='Książkowy rozum';
+insert into podcast (id, title, description, category, image_url, audio_url, blocked, price, length, visible)
 values (5,
         'Znajdź sobie hobby',
         'O tym jak ważne jest hobby w rozwoju samego siebie i relacjach z innymi..',
@@ -48,6 +52,7 @@ values (5,
         'metody_zmiany_nawykow',
         false,
         2,
-        '12.00') ON DUPLICATE KEY update title='Znajdź sobie hobby';
+        '12.00',
+        true) ON DUPLICATE KEY update title='Znajdź sobie hobby';
 
 replace into podcast_user(id, username, password, user_role) values (1, 'admin', '$2y$12$b5LIwLw1C39dptntq1atSu/A2YhCXYWxiPLou/yT5DgKtVaYji3TG', 'ADMIN');

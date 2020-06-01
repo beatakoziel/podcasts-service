@@ -48,6 +48,12 @@ public class PodcastController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PutMapping("visibility/{podcastId}")
+    public ResponseEntity<Void> updatePodcast(@PathVariable Long podcastId) {
+        podcastService.changeVisibility(podcastId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @PostMapping("/audio")
     public ResponseEntity<Void> uploadAudioFile(@RequestBody MultipartFile audioFile) {
         podcastService.uploadFile(audioFile);
