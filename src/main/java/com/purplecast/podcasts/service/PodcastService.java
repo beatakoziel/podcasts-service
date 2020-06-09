@@ -75,19 +75,7 @@ public class PodcastService {
     }
 
     public void updatePodcast(Long podcastId, PodcastRequest podcastRequest) {
-        System.out.println(podcastRequest.getPrice().equals(new BigDecimal(0)));
-        System.out.println(podcastRequest.getPrice());
-        System.out.println(new BigDecimal(0));
-        Podcast podcast = podcastRepository.findById(podcastId)
-                .orElseThrow(PodcastNotFoundException::new);
-        podcast.setTitle(podcastRequest.getTitle());
-        podcast.setDescription(podcastRequest.getDescription());
-        podcast.setCategory(podcastRequest.getCategory());
-        podcast.setPrice(podcastRequest.getPrice());
-        podcast.setImageUrl(podcastRequest.getImageUrl());
-        podcast.setLength(String.format("%.02f", podcastRequest.getLength()).replace(",", ":"));
-        podcast.setAudioUrl(podcastRequest.getFileName().replace(".mp3", ""));
-        podcast.setBlocked(!podcastRequest.getPrice().equals(new BigDecimal(0)));
+        Podcast podcast = updatePodcastById(podcastId, podcastRequest);
         podcastRepository.save(podcast);
         List<UserPodcast> userPodcastList = userPodcastRepository.findAll().stream()
                 .filter(userPodcast -> userPodcast.getPodcast().getId().equals(podcastId))
@@ -129,5 +117,19 @@ public class PodcastService {
             val rangeLength = min(1024 * 1024, contentLength);
             return new ResourceRegion(video, 0, rangeLength);
         }
+    }
+
+    private Podcast updatePodcastById(Long podcastId, PodcastRequest podcastRequest) {
+        Podcast podcast = podcastRepository.findById(podcastId)
+                .orElseThrow(PodcastNotFoundException::new);
+        podcast.setTitle(podcastRequest.getTitle());
+        podcast.setDescription(podcastRequest.getDescription());
+        podcast.setCategory(podcastRequest.getCategory());
+        podcast.setPrice(podcastRequest.getPrice());
+        podcast.setImageUrl(podcastRequest.getImageUrl());
+        podcast.setLength(String.format("%.02f", podcastRequest.getLength()).replace(",", ":"));
+        podcast.setAudioUrl(podcastRequest.getFileName().replace(".mp3", ""));
+        podcast.setBlocked(!podcastRequest.getPrice().equals(new BigDecimal(0)));
+        return podcast;
     }
 }
